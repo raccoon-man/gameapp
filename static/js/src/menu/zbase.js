@@ -4,7 +4,8 @@ class SpxGameMenu {
         console.log("MenuZbase");
         this.$menu = $(`
 <div class = "spx-game-menu">
-<div class="ac-game-menu-field">
+<br>
+<div class="spx-game-menu-field">
         <div class="spx-game-menu-field-item spx-game-menu-field-item-single-mode">
             单人模式
         </div>
@@ -21,6 +22,7 @@ class SpxGameMenu {
 </div>
 
 `);
+        this.$menu.hide();
         this.root.$spx_game.append(this.$menu);
         this.$single_mode = this.$menu.find('.spx-game-menu-field-item-single-mode');
         this.$multi_mode = this.$menu.find('.spx-game-menu-field-item-multi-mode');
@@ -40,7 +42,7 @@ class SpxGameMenu {
             console.log("click multi mode");
         });
         this.$settings.click(function(){
-            console.log("click settings");
+            outer.root.settings.logout_on_remote();
         });
     }
 

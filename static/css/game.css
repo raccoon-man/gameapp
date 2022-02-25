@@ -33,6 +33,7 @@
     width: 100%;
     height: 100%;
     user-select: none;
+    background-color : grey;
 }
 
 .spx-game-settings{
@@ -148,5 +149,11 @@
     font-size: 1.5vh;
     text-align: center;
     display: block;
+}
+.spx-game-playground > canvas{
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 

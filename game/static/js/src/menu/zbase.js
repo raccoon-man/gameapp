@@ -1,7 +1,6 @@
 class SpxGameMenu {
     constructor(root){
         this.root = root;
-        console.log("MenuZbase");
         this.$menu = $(`
 <div class = "spx-game-menu">
 <br>

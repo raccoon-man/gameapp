@@ -58,8 +58,10 @@ class Player extends AcGameObject{
             return false;
         });
         this.playground.game_map.$canvas.mousedown(function(e) {
+            
+
             if(outer.playground.state !== "fighting")
-                return false;
+                return true;
             const rect = outer.ctx.canvas.getBoundingClientRect();
             if (e.which === 3) {
                 let tx = (e.clientX - rect.left)/outer.playground.scale;
@@ -86,7 +88,18 @@ class Player extends AcGameObject{
                 outer.cul_skill = null;
             }
         });
-        $(window).keydown(function(e){
+        this.playground.game_map.$canvas.keydown(function(e){
+            if(e.which == 13){
+                if(outer.playground.mode === "multi_mode" ){
+                    outer.playground.chatfield.show_input();
+                    return false;
+                }
+            }else if(e.which == 27){
+                if(outer.playground.mode === "multi_mode"){
+                    outer.playground.chat_field.hide_input();
+                    return false;
+                }
+            }
             if(outer.playground.state !== "fighting")
                 return true;
             if (e.which === 81){
@@ -181,6 +194,8 @@ class Player extends AcGameObject{
 
     update(){
         this.spent_time += this.timedelta / 1000;
+
+        this.update_win();
         if(this.character === "me" && this.playground.state === "fighting"){
             this.update_coldtime();
         }
@@ -188,6 +203,12 @@ class Player extends AcGameObject{
 
 
         this.render();
+    }
+    update_win(){
+        if(this.playground.state === "fighting" && this.character === "me" && this.playground.players.length === 1){
+            this.playground.state = "over";
+            this.playground.score_board.win();
+        }
     }
     update_coldtime(){
         this.fireball_coldtime -= this.timedelta / 1000;
@@ -289,8 +310,12 @@ class Player extends AcGameObject{
 
     }
     on_destroy(){
-        if(this.character === "me")
-        this.playground.state = "over";
+        if(this.character === "me"){
+            if(this.playground.state === "fighting"){
+                this.playground.state = "over";
+                this.playground.score_board.lose();
+            }
+        }
         for(let i = 0; i < this.playground.players.length; i ++ ){
             if(this.playground.players[i] === this){
                 this.playground.players.splice(i, 1);

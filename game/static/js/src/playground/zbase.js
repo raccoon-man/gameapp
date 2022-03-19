@@ -36,8 +36,9 @@ class SpxGamePlayground {
         this.mode = mode;
         this.state = "waiting";
         this.notice_board = new NoticeBoard(this);
+        this.score_board = new ScoreBoard(this);
         this.player_cnt = 0;
-
+        
         this.resize();
         this.players = [];
         this.players.push(new Player(this, this.width / 2 / this.scale, 0.5, 0.05, "white", 0.15, "me", this.root.settings.username, this.root.settings.photo));
@@ -47,6 +48,7 @@ class SpxGamePlayground {
                 this.players.push(new Player(this, this.width / 2 / this.scale, 0.5, 0.05, this.get_random_color(), 0.15, "robot"))
             }
         }else if(mode === "multi_mode") {
+            this.chatfield = new ChatField(this);  
             this.mps = new MultiPlayerSocket(this);
             this.mps.uuid = this.players[0].uuid;
             this.mps.ws.onopen = function(){
@@ -57,7 +59,26 @@ class SpxGamePlayground {
     }
 
         hide() {  // 关闭playground界面
+            while(this.players && this.players.length > 0){
+                this.players[0].destroy();
+            }
+            if(this.game_map){
+                this.game_map.destroy();
+                this.game_map = null;
+            }
+            if(this.notice_board){
+                this.notice_board.destroy();
+                this.notice_board = null;
+            }
+			if (this.score_board) {
+                this.score_board.destroy();
+                this.score_board = null;
+            }
+
+            this.$playground.empty();
+
             this.$playground.hide();
+
         }
     }
 
